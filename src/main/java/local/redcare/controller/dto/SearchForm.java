@@ -7,6 +7,7 @@ import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
+import local.redcare.github.SearchRequest;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -30,7 +31,11 @@ public class SearchForm {
     private int page = 1;
 
     @Min(value = 1, message = "limit must be at least 1")
-    @Max(value = 50, message = "limit must be at most 50")
+    @Max(value = 30, message = "limit must be at most 30")
     private int limit = 7;
 
+
+    public SearchRequest toRequest() {
+        return new SearchRequest(q.strip(), since, lang == null ? lang : lang.strip(), page, limit);
+    }
 }
