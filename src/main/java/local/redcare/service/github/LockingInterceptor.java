@@ -53,6 +53,10 @@ public class LockingInterceptor implements ClientHttpRequestInterceptor {
         return response;
     }
 
+    public Instant getUnblockAt() {
+        return unblockAt.get();
+    }
+
     private void failIfBlocked() {
         Instant now = timeService.now();
         if (now.isBefore(unblockAt.get())) {

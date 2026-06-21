@@ -33,7 +33,7 @@ public class NaiveScoreServiceTest {
         service = new NaiveScoreService(timeService);
     }
 
-    @ParameterizedTest(name = "[{index}] stars={0}, forks={1} -> {2}")
+    @ParameterizedTest(name = "[{index}] stars={0}, forks={1} is {2}")
     @CsvSource(nullValues = "None", value = {
             "0, 0, 0.00",
             "999, 0, 2.25",
@@ -68,7 +68,7 @@ public class NaiveScoreServiceTest {
     }
 
     @Test
-    void score_givenNoPushDt_returnScore() {
+    void score_givenNullPush_returnScore() {
         BigDecimal result = service.score(entry(999, 99, null));
         assertThat(result).isEqualTo(BigDecimal.valueOf(55, 2));
     }
