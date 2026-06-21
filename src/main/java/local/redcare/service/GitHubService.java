@@ -22,7 +22,7 @@ public class GitHubService {
     public GitHubPage<GitHubSearchEntry> search(SearchRequest request) {
         String query = toQuery(request);
 
-        if (query.length() > 255) {
+        if (query.length() >= 255) {
             throw new ValidationException("Too long query");
         }
 

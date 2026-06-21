@@ -1,5 +1,7 @@
 package local.redcare.config;
 
+import local.redcare.service.TimeService;
+import local.redcare.service.github.LockingInterceptor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,10 +24,16 @@ public class AppConfig {
                 .build();
     }
 
+    @Bean("github.lock")
+    public LockingInterceptor githubLock(TimeService timeService) {
+        return new LockingInterceptor(timeService);
+    }
+
     @Bean("github.client")
     public RestClient githubClient(
             GitHubProps props,
-            @Qualifier("github.mapper") JsonMapper githubMapper
+            @Qualifier("github.mapper") JsonMapper githubMapper,
+            @Qualifier("github.lock") LockingInterceptor lockInterceptor
     ) {
         RestClient.Builder builder = RestClient.builder()
                 .baseUrl("https://api.github.com")
@@ -33,6 +41,7 @@ public class AppConfig {
                 .defaultHeader("User-Agent", props.ua())
                 .defaultHeader("Accept", "application/vnd.github+json")
                 .defaultHeader("X-GitHub-Api-Version", "2026-03-10")
+                .requestInterceptor(lockInterceptor)
                 .configureMessageConverters(converters ->
                         converters.withJsonConverter(new JacksonJsonHttpMessageConverter(githubMapper)));
 
