@@ -1,4 +1,4 @@
-package local.redcare.service.github;
+package local.redcare.support;
 
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
@@ -32,7 +32,7 @@ public class PermitHandler {
 
         @Override
         public void close() {
-            if(isClosed.compareAndSet(false, true)) {
+            if (isClosed.compareAndSet(false, true)) {
                 semaphore.release(permits);
             }
         }

@@ -1,7 +1,6 @@
 package local.redcare.service.github;
 
 import jakarta.annotation.PostConstruct;
-import local.redcare.service.TimeService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -10,11 +9,13 @@ import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
 
+import local.redcare.service.TimeService;
+
 import java.io.IOException;
 import java.time.Instant;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static local.redcare.service.github.ParsingHelper.parseLong;
+import static local.redcare.support.ParsingHelper.parseLong;
 
 
 @Slf4j

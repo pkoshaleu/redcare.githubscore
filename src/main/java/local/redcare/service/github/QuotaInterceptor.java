@@ -8,9 +8,11 @@ import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
 
+import local.redcare.support.PermitHandler;
+
 import java.io.IOException;
 
-import static local.redcare.service.github.ParsingHelper.parseLong;
+import static local.redcare.support.ParsingHelper.parseLong;
 
 
 @Slf4j

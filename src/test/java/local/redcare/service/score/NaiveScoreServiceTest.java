@@ -1,11 +1,12 @@
 package local.redcare.service.score;
 
-import local.redcare.domain.github.GitHubSearchEntry;
-import local.redcare.service.TimeService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+
+import local.redcare.domain.github.GitHubSearchEntry;
+import local.redcare.service.TimeService;
 
 import java.math.BigDecimal;
 import java.time.Instant;

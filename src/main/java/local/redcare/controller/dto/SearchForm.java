@@ -7,8 +7,9 @@ import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
-import local.redcare.domain.github.SearchRequest;
 import lombok.Data;
+
+import local.redcare.domain.SearchRequest;
 
 import java.time.LocalDate;
 
@@ -17,7 +18,7 @@ import java.time.LocalDate;
 public class SearchForm {
 
     @NotBlank(message = "q is required")
-    @Size(max=255, message = "q is too long, must be shorter than 255 characters long")
+    @Size(max = 255, message = "q is too long, must be shorter than 255 characters long")
     @Pattern(regexp = "[^:]*", message = "q must not contain ':'")
     private String q;
 
@@ -34,8 +35,8 @@ public class SearchForm {
     @Max(value = 30, message = "limit must be at most 30")
     private int limit = 7;
 
-
     public SearchRequest toRequest() {
-        return new SearchRequest(q.strip(), since, lang == null ? lang : lang.strip(), page, limit);
+        return new SearchRequest(q.strip(), since, lang == null ? null : lang.strip());
     }
+
 }

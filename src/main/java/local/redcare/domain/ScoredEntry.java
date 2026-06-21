@@ -3,7 +3,8 @@ package local.redcare.domain;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 
-public record ScoredEntry (
+
+public record ScoredEntry(
 
         Long repoId,
         String url,

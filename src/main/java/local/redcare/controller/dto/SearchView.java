@@ -1,19 +1,29 @@
 package local.redcare.controller.dto;
 
 import local.redcare.domain.ScoredEntry;
-import lombok.Data;
 
+import java.util.Collections;
 import java.util.List;
 
-@Data
-public class SearchView {
 
-    private List<ScoredEntry> entries;
+public record SearchView(
+        List<ScoredEntry> entries,
+        int total,
+        int page,
+        int limit
+) {
 
-    public static SearchView of(List<ScoredEntry> entries) {
-        SearchView view = new SearchView();
-        view.setEntries(entries);
-        return view;
+    public static SearchView of(List<ScoredEntry> entries, int page, int limit) {
+        int total = entries.size();
+
+        int startAt = Math.min(total - 1, (page - 1) * limit);
+        int endAt = Math.min(total - 1, page * limit);
+
+        return new SearchView(
+                startAt == endAt ? Collections.emptyList() : entries.subList(startAt, endAt),
+                total,
+                page,
+                limit
+        );
     }
-
 }

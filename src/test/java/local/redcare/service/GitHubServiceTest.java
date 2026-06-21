@@ -1,8 +1,9 @@
 package local.redcare.service;
 
-import local.redcare.domain.github.SearchRequest;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+
+import local.redcare.domain.SearchRequest;
 
 import java.time.LocalDate;
 
@@ -19,7 +20,7 @@ public class GitHubServiceTest {
             "awesome, java, 2026-01-01, awesome lang:java created:>2026-01-01",
     })
     void toQuery_givenRequest_buildsQuery(String q, String lang, LocalDate since, String expected) {
-        SearchRequest request = new SearchRequest(q, since, lang, 1, 10);
+        SearchRequest request = new SearchRequest(q, since, lang);
 
         String result = GitHubService.toQuery(request);
 

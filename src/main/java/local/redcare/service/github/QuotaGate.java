@@ -2,6 +2,8 @@ package local.redcare.service.github;
 
 import lombok.extern.slf4j.Slf4j;
 
+import local.redcare.support.PermitHandler;
+
 import java.util.concurrent.atomic.AtomicReference;
 
 

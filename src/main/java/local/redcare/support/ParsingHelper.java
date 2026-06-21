@@ -1,4 +1,4 @@
-package local.redcare.service.github;
+package local.redcare.support;
 
 public final class ParsingHelper {
 

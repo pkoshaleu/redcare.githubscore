@@ -2,7 +2,9 @@ package local.redcare.service.github;
 
 import org.junit.jupiter.api.Test;
 
-import static local.redcare.service.github.QuotaGate.Mode.*;
+import static local.redcare.service.github.QuotaGate.Mode.DRIPPING;
+import static local.redcare.service.github.QuotaGate.Mode.FULL_OPEN;
+import static local.redcare.service.github.QuotaGate.Mode.HALF_OPEN;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class QuotaGateTest {

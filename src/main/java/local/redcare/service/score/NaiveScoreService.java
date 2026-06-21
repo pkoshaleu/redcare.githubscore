@@ -1,10 +1,11 @@
 package local.redcare.service.score;
 
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Component;
+
 import local.redcare.domain.github.GitHubSearchEntry;
 import local.redcare.service.ScoreService;
 import local.redcare.service.TimeService;
-import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -29,7 +30,7 @@ public class NaiveScoreService implements ScoreService {
     public BigDecimal score(GitHubSearchEntry entry) {
         return BigDecimal.valueOf(
                 calculateBaseline(entry) * calculateMultiplier(entry)
-        ).setScale(2, RoundingMode.HALF_UP) ;
+        ).setScale(2, RoundingMode.HALF_UP);
     }
 
     private double calculateBaseline(GitHubSearchEntry entry) {
