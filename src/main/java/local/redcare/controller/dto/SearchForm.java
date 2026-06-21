@@ -7,7 +7,7 @@ import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
-import local.redcare.github.SearchRequest;
+import local.redcare.domain.github.SearchRequest;
 import lombok.Data;
 
 import java.time.LocalDate;

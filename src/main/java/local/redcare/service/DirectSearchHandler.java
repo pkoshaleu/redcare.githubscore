@@ -1,9 +1,9 @@
 package local.redcare.service;
 
 import local.redcare.domain.ScoredEntry;
-import local.redcare.github.GitHubPage;
-import local.redcare.github.GitHubSearchEntry;
-import local.redcare.github.SearchRequest;
+import local.redcare.domain.github.GitHubPage;
+import local.redcare.domain.github.GitHubSearchEntry;
+import local.redcare.domain.github.SearchRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 

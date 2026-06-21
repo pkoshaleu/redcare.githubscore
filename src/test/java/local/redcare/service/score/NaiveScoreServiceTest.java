@@ -1,6 +1,6 @@
 package local.redcare.service.score;
 
-import local.redcare.github.GitHubSearchEntry;
+import local.redcare.domain.github.GitHubSearchEntry;
 import local.redcare.service.TimeService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

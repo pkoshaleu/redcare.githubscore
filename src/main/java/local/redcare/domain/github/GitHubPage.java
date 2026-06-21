@@ -1,4 +1,4 @@
-package local.redcare.github;
+package local.redcare.domain.github;
 
 import lombok.Data;
 

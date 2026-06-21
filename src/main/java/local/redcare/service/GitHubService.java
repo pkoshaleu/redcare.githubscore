@@ -1,9 +1,9 @@
 package local.redcare.service;
 
 import jakarta.validation.ValidationException;
-import local.redcare.github.GitHubPage;
-import local.redcare.github.GitHubSearchEntry;
-import local.redcare.github.SearchRequest;
+import local.redcare.domain.github.GitHubPage;
+import local.redcare.domain.github.GitHubSearchEntry;
+import local.redcare.domain.github.SearchRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
