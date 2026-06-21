@@ -24,6 +24,8 @@ public class QuotaGate {
 
     }
 
+    private static final long DEFAULT_QUOTA = 500;
+
     private final AtomicReference<Mode> mode = new AtomicReference<>(Mode.FULL_OPEN);
     private final PermitHandler guard = new PermitHandler(4);
 
@@ -31,6 +33,11 @@ public class QuotaGate {
         int permits = mode.get().permits;
         log.debug("Entering gate; permits={}", permits);
         return guard.enter(permits);
+    }
+
+    public void observe(Long used, Long limit) {
+        long promille = (used == null || limit == null) ? DEFAULT_QUOTA : 1000 * used / limit;
+        updateQuota(promille);
     }
 
     public void updateQuota(long quota) {

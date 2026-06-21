@@ -4,6 +4,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 import local.redcare.domain.SearchRequest;
+import local.redcare.domain.github.GitHubQuery;
 
 import java.time.LocalDate;
 
@@ -22,10 +23,8 @@ public class GitHubServiceTest {
     void toQuery_givenRequest_buildsQuery(String q, String lang, LocalDate since, String expected) {
         SearchRequest request = new SearchRequest(q, since, lang);
 
-        String result = GitHubService.toQuery(request);
+        String result = GitHubQuery.of(request);
 
         assertThat(result).isEqualTo(expected);
     }
-
-
 }

@@ -21,7 +21,6 @@ public class QuotaInterceptor implements ClientHttpRequestInterceptor {
 
     private static final String HEADER_QUOTA_LIMIT = "x-ratelimit-limit";
     private static final String HEADER_QUOTA_USED = "x-ratelimit-used";
-    private static final long DEFAULT_QUOTA = 500;
 
     private final QuotaGate gate;
 
@@ -31,24 +30,20 @@ public class QuotaInterceptor implements ClientHttpRequestInterceptor {
                                         ClientHttpRequestExecution execution) throws IOException {
         try (PermitHandler.Permit _ = gate.enter()) {
             ClientHttpResponse response = execution.execute(request, body);
-            gate.updateQuota(getCurrentPromilleQuota(response.getHeaders()));
+            updateQuota(response.getHeaders());
 
             return response;
         } catch (InterruptedException ex) {
             Thread.currentThread().interrupt();
-            throw new RuntimeException("Interruption at quota gate", ex);
+            throw new QuotaGateException("Interruption at quota gate", ex);
         }
     }
 
-    private long getCurrentPromilleQuota(HttpHeaders headers) {
-        Long limit = parseLong(headers.getFirst(HEADER_QUOTA_LIMIT));
+    private void updateQuota(HttpHeaders headers) {
         Long used = parseLong(headers.getFirst(HEADER_QUOTA_USED));
-        log.debug("Current quota; {}/{}", used, limit);
+        Long limit = parseLong(headers.getFirst(HEADER_QUOTA_LIMIT));
 
-        if (limit == null || used == null) {
-            return DEFAULT_QUOTA;
-        } else {
-            return 1000 * used / limit;
-        }
+        gate.observe(used, limit);
     }
+
 }

@@ -21,9 +21,9 @@ public class MergingExecutor<K, V> {
             V value = loader.get();
             task.complete(value);
             return value;
-        } catch (RuntimeException | Error e) {
-            task.completeExceptionally(e);
-            throw e;
+        } catch (RuntimeException | Error ex) {
+            task.completeExceptionally(ex);
+            throw ex;
         } finally {
             tasks.remove(key, task);
         }

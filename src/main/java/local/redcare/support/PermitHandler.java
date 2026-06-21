@@ -26,7 +26,7 @@ public class PermitHandler {
             if (semaphore.tryAcquire(permits, 15, TimeUnit.SECONDS)) {
                 this.permits = permits;
             } else {
-                throw new InterruptedException("No permits available");
+                throw new PermitUnavailableException(permits);
             }
         }
 

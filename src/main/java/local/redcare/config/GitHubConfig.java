@@ -56,8 +56,8 @@ public class GitHubConfig {
                 .defaultHeader("User-Agent", props.ua())
                 .defaultHeader("Accept", "application/vnd.github+json")
                 .defaultHeader("X-GitHub-Api-Version", "2026-03-10")
-                .requestInterceptor(quotaInterceptor)
                 .requestInterceptor(lockInterceptor)
+                .requestInterceptor(quotaInterceptor)
                 .configureMessageConverters(converters ->
                         converters.withJsonConverter(new JacksonJsonHttpMessageConverter(githubMapper)));
 

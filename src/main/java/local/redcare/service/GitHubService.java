@@ -1,6 +1,5 @@
 package local.redcare.service;
 
-import jakarta.validation.ValidationException;
 import lombok.AllArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
@@ -8,6 +7,7 @@ import org.springframework.web.client.RestClient;
 
 import local.redcare.domain.SearchRequest;
 import local.redcare.domain.github.GitHubPage;
+import local.redcare.domain.github.GitHubQuery;
 import local.redcare.domain.github.GitHubSearchEntry;
 
 
@@ -23,11 +23,7 @@ public class GitHubService {
 
 
     public GitHubPage<GitHubSearchEntry> search(SearchRequest request, int page, int limit) {
-        String query = toQuery(request);
-
-        if (query.length() > 250) {
-            throw new ValidationException("Too long query");
-        }
+        String query = GitHubQuery.of(request);
 
         return githubRestClient.get().uri(builder ->
                 builder.path("search/repositories")
@@ -36,19 +32,6 @@ public class GitHubService {
                         .queryParam("page", page)
                         .build()
         ).retrieve().body(REPO_SEARCH_PAGE);
-    }
-
-    public static String toQuery(SearchRequest request) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(request.q());
-        if (request.lang() != null) {
-            sb.append(" lang:").append(request.lang());
-        }
-        if (request.since() != null) {
-            sb.append(" created:>").append(request.since());
-        }
-
-        return sb.toString();
     }
 
 }

@@ -61,8 +61,7 @@ public class LockingInterceptor implements ClientHttpRequestInterceptor {
     private void failIfBlocked() {
         Instant now = timeService.now();
         if (now.isBefore(unblockAt.get())) {
-            //TODO: own exception here
-            throw new RuntimeException("External API is blocked");
+            throw new BlockedException(unblockAt.get());
         }
     }
 
@@ -86,7 +85,7 @@ public class LockingInterceptor implements ClientHttpRequestInterceptor {
         after = after == null ? 60 : after;
         blockUntil(timeService.now().plusSeconds(after));
 
-        throw new RuntimeException("Block on github");
+        throw new BlockedException(unblockAt.get());
     }
 
     private void blockUntil(Instant moment) {

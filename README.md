@@ -70,3 +70,67 @@ score = baseline * multiplier
 
 This approach gives higher scores to repositories that are popular and recently maintained, 
 while still allowing stable but older repositories to retain part of their popularity score.
+
+## Decisions
+- Build a REST API to provide access to repository popularity scores.
+- Calculate scores based on live responses from the GitHub API, without
+long-term storage or preliminary crawling.
+- Use in-memory response caching and pagination.
+- Focus on GitHub API usage, including a flexible execution model depending on current API rate-limit allowances.
+- Focus on preventing concurrent cache updates.
+
+## Building and Execution
+
+### Prerequisites
+ - Java 25.x
+ - Maven 3.9.x
+
+### Start it 
+
+With Maven:
+
+```
+mvn spring-boot:run
+```
+Alternatively, use the Jib plugin to build a Docker image.
+
+### API Usage
+
+Example request (with `httpie`):
+```
+http localhost:8080/api/repos/search?q=awesome&page=1&limit=10&since=2025-01-01&lang=python
+```
+
+The API searches GitHub repositories and returns repositories enriched with calculated popularity scores:
+
+```
+{
+  "entries": [
+    {
+      "forks": 172,
+      "repo_id": 1000784797,
+      "score": 2.08,
+      "stars": 789,
+      "updated_at": "2026-02-10T23:20:36Z",
+      "url": "https://github.com/rohitg00/awesome-ai-apps"
+    },
+      ...
+  ]
+}
+```
+
+## Known Issues
+- Magic numbers are still present in `QuotaGate`.
+- The task cache in `MergingExecutor` is currently unbounded.
+- `GitHubSearchEntry` has some unnecessary dependencies in the graph.
+- Cache invalidation strategy is still basic.
+- Pagination strategy is intentionally limited.
+- Only 100 candidates are used for scoring.
+
+## What to Do Next
+- Load a reasonable number of additional pages during scoring to improve result quality.
+- Implement a more sophisticated cache with size limits, TTL, and eviction policy (or go with external cache).
+- Search and destroy all magic numbers.
+- Add metrics for GitHub API usage, cache hits, cache misses, and throttling events.
+- Reasonable bound task cache.
+- More integration tests.

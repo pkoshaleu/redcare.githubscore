@@ -27,8 +27,8 @@ public class CachedSearchHandler implements SearchHandler {
 
         return cached.orElseGet(
                 () -> executor.execute(key, () -> {
-                    Optional<List<ScoredEntry>> inner_cached = cache.lookUp(key);
-                    return inner_cached.orElseGet(
+                    Optional<List<ScoredEntry>> innerCached = cache.lookUp(key);
+                    return innerCached.orElseGet(
                             () -> {
                                 List<ScoredEntry> entries = delegate.invoke(request);
                                 cache.put(key, entries);
