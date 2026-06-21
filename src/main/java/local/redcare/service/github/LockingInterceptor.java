@@ -65,7 +65,7 @@ public class LockingInterceptor implements ClientHttpRequestInterceptor {
         Long remaining = parseLong(headers.getFirst(HEADER_REMAINING));
         if (log.isDebugEnabled()) {
             String resource = headers.getFirst(HEADER_RESOURCE);
-            log.debug("Current api usage {}:{}", resource, remaining);
+            log.debug("Remaining api usage; {}={}", resource, remaining);
         }
 
         if (remaining != null && remaining <= 1) {

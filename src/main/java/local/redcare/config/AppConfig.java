@@ -2,6 +2,8 @@ package local.redcare.config;
 
 import local.redcare.service.TimeService;
 import local.redcare.service.github.LockingInterceptor;
+import local.redcare.service.github.QuotaGate;
+import local.redcare.service.github.QuotaInterceptor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,6 +26,16 @@ public class AppConfig {
                 .build();
     }
 
+    @Bean("github.gate")
+    public QuotaGate githubGate() {
+        return new QuotaGate();
+    }
+
+    @Bean("github.quota")
+    public QuotaInterceptor githubQuota(QuotaGate gate) {
+        return new QuotaInterceptor(gate);
+    }
+
     @Bean("github.lock")
     public LockingInterceptor githubLock(TimeService timeService) {
         return new LockingInterceptor(timeService);
@@ -33,6 +45,7 @@ public class AppConfig {
     public RestClient githubClient(
             GitHubProps props,
             @Qualifier("github.mapper") JsonMapper githubMapper,
+            @Qualifier("github.quota") QuotaInterceptor quotaInterceptor,
             @Qualifier("github.lock") LockingInterceptor lockInterceptor
     ) {
         RestClient.Builder builder = RestClient.builder()
@@ -41,6 +54,7 @@ public class AppConfig {
                 .defaultHeader("User-Agent", props.ua())
                 .defaultHeader("Accept", "application/vnd.github+json")
                 .defaultHeader("X-GitHub-Api-Version", "2026-03-10")
+                .requestInterceptor(quotaInterceptor)
                 .requestInterceptor(lockInterceptor)
                 .configureMessageConverters(converters ->
                         converters.withJsonConverter(new JacksonJsonHttpMessageConverter(githubMapper)));
