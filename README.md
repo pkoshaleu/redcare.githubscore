@@ -94,6 +94,13 @@ mvn spring-boot:run
 ```
 Alternatively, use the Jib plugin to build a Docker image.
 
+To use higher GitHub API rate limits, provide a personal GitHub API token via the `GITHUB_TOKEN` environment variable:
+
+```
+export GITHUB_TOKEN=ghp_your_token_here
+mvn spring-boot:run
+```
+
 ### API Usage
 
 Example request (with `httpie`):
@@ -101,7 +108,15 @@ Example request (with `httpie`):
 http localhost:8080/api/repos/search?q=awesome&page=1&limit=10&since=2025-01-01&lang=python
 ```
 
-The API searches GitHub repositories and returns repositories enriched with calculated popularity scores:
+Use the following query parameters:
+
+- `q` search query passed to GitHub repository search;
+- `since` limits results to repositories created on or after the given date;
+- `lang` limits results to repositories using a specific programming language;
+- `page` result page number;
+- `limit` number of results per page.
+
+Results are ordered by the calculated popularity score:
 
 ```
 {
